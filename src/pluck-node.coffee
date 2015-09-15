@@ -1,16 +1,11 @@
+{deepSet} = require 'lodash-deep'
 class PluckNode
   constructor: (@config={}, @data={}) ->
   onMessage:(message, callback=->)=>
 
-    # @config stores properties/options of the node
-    someProperty = @config.someNodeProperty
-
-    # @data is your node's persistant memory store, if there is already data on it
-    # you can call it, otherwise below shows how to assign it values.
-    @data.someArray = []
-    @data.push 50
-    # callback null will finish the process without sending a MESSAGE
-    # callback null, YOUR-MESSAGE-OBJECT-TO-SEND
-    callback null, message
+    newMessage = {}
+    @config.key = 'msg' unless @config.key
+    deepSet newMessage, @config.key, @config.value
+    callback null, newMessage
 
 module.exports = PluckNode
